@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiệp Chúc Mừng Năm Mới 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+            flex-direction: column;
+        }
+
+        ::selection {
+            color: #ffffff;
+            background-color: #ff7e5f;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 2s forwards, shake 1s ease-in-out 3s;
+            box-shadow: 10px 10px;
+        }
+
+        .card p {
+            color: black;
+        }
+
+        h1 {
+            font-size: 40px;
+            color: #ff5733;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .sticker-container {
+            display: flex;
+            margin-top: 30px;
+            justify-content: space-around;
+        }
+
+        .sticker {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            cursor: pointer;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .sticker.sun {
+            background-image: url('https://img.icons8.com/ios/452/sun.png');
+        }
+
+        .sticker.star {
+            background-image: url('https://img.icons8.com/ios/452/star.png');
+        }
+
+        .sticker.heart {
+            background-image: url('https://img.icons8.com/ios/452/heart.png');
+        }
+
+        .card .sticker-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .draggable {
+            position: absolute;
+            cursor: move;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(5deg);
+            }
+            50% {
+                transform: rotate(-5deg);
+            }
+            75% {
+                transform: rotate(5deg);
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Chúc Mừng Năm Mới 2025!</h1>
+        <p>Chúc bạn một năm mới an khang, thịnh vượng, đầy ắp niềm vui và thành công!</p>
+        <p>Hy vọng năm mới sẽ mang đến nhiều cơ hội tuyệt vời và may mắn cho bạn!</p>
+        <div class="footer">
+            <p>Chúc bạn một năm mới tràn đầy hạnh phúc và sức khỏe!</p>
+        </div>
+
+        <div class="sticker-area" id="stickerArea"></div>
+    </div>
+
+    <!-- Fireworks Canvas -->
+    <canvas id="fireworks"></canvas>
+
+    <div class="sticker-container">
+        <div class="sticker sun" id="stickerSun"></div>
+        <div class="sticker star" id="stickerStar"></div>
+        <div class="sticker heart" id="stickerHeart"></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+
+        function createParticle(x, y, color) {
+            const particleCount = 100;
+            for (let i = 0; i < particleCount; i++) {
+                const angle = Math.random() * 2 * Math.PI;
+                const speed = Math.random() * 4 + 3;
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    alpha: 4,
+                    color: color,
+                    size: Math.random() * 3 + 2,
+                    decay: Math.random() * 0.02 + 0.01
+                });
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, i) => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= p.decay;
+                if (p.alpha <= 0) {
+                    particles.splice(i, 1);
+                } else {
+                    ctx.fillStyle = `rgba(${p.color}, ${p.alpha})`;
+                    ctx.fillRect(p.x, p.y, p.size, p.size);
+                }
+            });
+        }
+
+        function randomColor() {
+            const r = Math.floor(Math.random() * 162);
+            const g = Math.floor(Math.random() * 255);
+            const b = Math.floor(Math.random() * 255);
+            return `${r},${g},${b}`;
+        }
+
+        function triggerFireworks() {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height;
+            createParticle(x, y, randomColor());
+        }
+
+        setInterval(triggerFireworks, Math.random() * 2000 + 2000);
+
+        function loop() {
+            drawParticles();
+            requestAnimationFrame(loop);
+        }
+
+        loop();
+
+        // Dragging functionality for stickers
+        function makeDraggable(element) {
+            element.onmousedown = function(e) {
+                let shiftX = e.clientX - element.getBoundingClientRect().left;
+                let shiftY = e.clientY - element.getBoundingClientRect().top;
+
+                element.style.position = 'absolute';
+                element.style.zIndex = 1000;
+                document.body.append(element);
+
+                function moveAt(pageX, pageY) {
+                    element.style.left = pageX - shiftX + 'px';
+                    element.style.top = pageY - shiftY + 'px';
+                }
+
+                moveAt(e.pageX, e.pageY);
+
+                function onMouseMove(e) {
+                    moveAt(e.pageX, e.pageY);
+                }
+
+                document.addEventListener('mousemove', onMouseMove);
+
+                element.onmouseup = function() {
+                    document.removeEventListener('mousemove', onMouseMove);
+                    element.onmouseup = null;
+                };
+            };
+
+            element.ondragstart = function() {
+                return false;
+            };
+        }
+
+        // Add sticker to the card
+        function addSticker(sticker) {
+            const newSticker = document.createElement('div');
+            newSticker.classList.add('draggable');
+            newSticker.style.backgroundImage = `url(${sticker.style.backgroundImage})`;
+            newSticker.style.width = '50px';
+            newSticker.style.height = '50px';
+            document.getElementById('stickerArea').appendChild(newSticker);
+            makeDraggable(newSticker);
+        }
+
+        document.getElementById('stickerSun').onclick = function() {
+            addSticker(this);
+        };
+
+        document.getElementById('stickerStar').onclick = function() {
+            addSticker(this);
+        };
+
+        document.getElementById('stickerHeart').onclick = function() {
+            addSticker(this);
+        };
+
+    </script>
+
+</body>
+</html>
